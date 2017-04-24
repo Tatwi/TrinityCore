@@ -7,3 +7,6 @@ These are the customizations that have been made using the worldserver.conf conf
 #### Legend:
 *mod-nameOfMod.md:* Changes to existing content. 
 *new-nameOfNewThings.md:* Some entirely new custom content.
+
+[new-vendors.md](new-vendors.md)
+A list of all the vendors I have added, including what they sell and where to find them.
