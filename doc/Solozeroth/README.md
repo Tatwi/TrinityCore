@@ -4,6 +4,9 @@ A series of modification that make it easier to play alone, in a manner that I f
 [aboutConfig.md](aboutConfig.md)  
 These are the customizations that have been made using the worldserver.conf configuration file (which is also included in this directory).
 
+[aboutNewItems.txt](aboutNewItems.txt)  
+A file that tracks the entry/id's for new items, as well as which unused client items I have put to use.
+
 #### Legend:  
 *mod-nameOfMod.md:* Changes to existing content.  
 *new-nameOfNewThings.md:* Some entirely new custom content.  
