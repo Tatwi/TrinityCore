@@ -10,3 +10,6 @@ These are the customizations that have been made using the worldserver.conf conf
 
 [new-vendors.md](new-vendors.md)  
 A list of all the vendors I have added, including what they sell and where to find them.
+
+[mod-vendors-outland.md](mod-vendors-outland.md)  
+Vendors in Outland that I have modified.
