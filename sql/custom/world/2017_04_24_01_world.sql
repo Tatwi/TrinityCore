@@ -16,7 +16,7 @@ INSERT INTO `page_text` (`ID`, `Text`, `NextPageID`, `VerifiedBuild`)
 VALUES ('4001', 
 'Welcome!
 
-In case you were not aware, the magical city of Dalaran was recently transported to Northrend and opened to the general public, to aid in the fight against the Lich King. In Dalaran you will find many amazing things to spend your gold on, as well as other conveniences and resources. Alliance members wishing to visit Dalaran should speak to Bob Rasket in Stormwind Castle, while Horde Members should speak to Wi Nuggit at the castle in the Valley of Wizdom in Orgrimmar.
+In case you were not aware, the magical city of Dalaran was recently transported to Northrend and opened to the general public, to aid in the fight against the Lich King. In Dalaran you will find many amazing things to spend your gold on, as well as other conveniences and resources. Alliance members wishing to visit Dalaran should speak to Bob Rasket in Stormwind Castle, while Horde Members should speak to Wi Nuggit at Grommash Hold in the Valley of Wizdom in Orgrimmar.
 
 Use your money wisely, you can buy darn near anything with it - including badges and honor!', 
 '4002', '0');

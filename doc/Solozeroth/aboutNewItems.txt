@@ -2,6 +2,7 @@ Solozeroth adds new objects to the database. The new entry/ID numbers start here
 
 `creature_template`.`entry` = 251001
 `page_text`.`ID` = 4001 (skip 5 between books to easily allow for extra pages in the future)
+`gossip_menu_option`.`menu_id` = 58001
 
 `item_template`.`entry`: 
 To have a new item display properly, the client needs to 'jibe' with the info on the server. 

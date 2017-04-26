@@ -31,3 +31,5 @@ Changes to existing "slash" and "dot" commands.
 
 ## Charcters & Quests
 
+[new-characters-utility.md](new-characters-utility.md)  
+New NPCs, creatures, and interactive world items that perform a function.
