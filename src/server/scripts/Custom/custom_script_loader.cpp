@@ -17,11 +17,12 @@
 
 // This is where scripts' loading functions should be declared:
 void AddSC_gossipTeleDalaran();
-
+void AddSC_soloHelper();
 
 // The name of this function should match:
 // void Add${NameOfDirectory}Scripts()
 void AddCustomScripts()
 {
 	AddSC_gossipTeleDalaran();
+	AddSC_soloHelper();
 }

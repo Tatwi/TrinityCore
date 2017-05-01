@@ -32,8 +32,9 @@ DELETE FROM `gossip_menu_option` WHERE (`menu_id`=58002);
 INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `OptionBroadcastTextID`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `box_coded`, `box_money`, `BoxBroadcastTextID`, `VerifiedBuild`) 
 VALUES 
 ('58002', '0', '0', '', '71166', '1', '1', '50000', '0', '0', '50000', '42373', '0'), -- Port to Dalaran for 5g
-('58002', '1', '0', 'This is a custom message!', '', '1', '1', '50000', '0', '0', '5000', '42373', '0'), -- Test option
-('58002', '2', '0', 'This is also a custom message!', '', '1', '1', '50000', '0', '0', '25000', '42373', '0'); -- Test option
+('58002', '1', '0', 'I would like to check my mail.', '', '1', '1', '50000', '0', '0', '20000', '42373', '0'), -- Summon mail box for 2g
+('58002', '2', '0', 'I need to hire a soldier.', '', '1', '1', '50000', '0', '0', '250000', '42373', '0'), -- Summon one guard NPC at a time for 25g each, no max.
+('58002', '3', '0', 'I need to hire an elite soldier.', '', '1', '1', '50000', '0', '0', '1250000', '42373', '0'); -- Summon one guard NPC at a time for 125g each, no max.
 
 -- Gossip Menu Step 3
 -- = = = = = = = = = = = 
@@ -43,7 +44,45 @@ INSERT INTO `smart_scripts` (`entryorguid`, `source_type`, `id`, `link`, `event_
 VALUES
 -- Start a despawn countdown of 2 min, otherwise he stays spawned a very long time.
 ('128', '0', '0', '0', '54', '0', '100', '256', '0', '0', '0', '0', '41', '120000', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', 'Homer Iliadus - On Script - Despawn In 120000 ms'),
--- Option 0: Teleport to Dalaran (spell)
-('128', '0', '1', '0', '62', '0', '100', '0', '58002', '0', '0', '0', '11', '30719', '0', '0', '0', '0', '0', '7', '0', '0', '0', '0', '0', '0', '0', 'Homer Iliadus - On Gossip Option 0 Selected - Cast \'Teleport to Dalaran\'');
+-- Option 1: Teleport to Dalaran (existing spell)
+('128', '0', '1', '0', '62', '0', '100', '0', '58002', '0', '0', '0', '11', '30719', '0', '0', '0', '0', '0', '7', '0', '0', '0', '0', '0', '0', '0', 'Homer Iliadus - On Gossip Option 0 Selected - Cast \'Teleport to Dalaran\''),
+-- Option 2: Open Mail (existing spell)
+('128', '0', '2', '0', '62', '0', '100', '0', '58002', '1', '0', '0', '11', '30524', '0', '0', '0', '0', '0', '7', '0', '0', '0', '0', '0', '0', '0', 'Homer Iliadus - On Gossip Option 1 Selected - Cast \'Remote Mail Terminal\''),
+-- Option 5: Summon an guard NPC
+('128', '0', '3', '0', '62', '0', '100', '0', '58002', '2', '0', '0', '12', '251004', '5', '300000', '0', '0', '0', '7', '0', '0', '0', '0', '0', '0', '0', 'Homer Iliadus - On Gossip Option 1 Selected - Summon Creature \'Valiant Soldier\''),
+-- Option 5: Summon an guard NPC
+('128', '0', '4', '0', '62', '0', '100', '0', '58002', '3', '0', '0', '12', '251005', '5', '300000', '0', '0', '0', '7', '0', '0', '0', '0', '0', '0', '0', 'Homer Iliadus - On Gossip Option 1 Selected - Summon Creature \'Elite Soldier\'');
+
+
+-- Create Helper NPCs
+-- = = = = = = = = = = = 
+-- Shared gossip menu
+DELETE FROM `gossip_menu` WHERE (`entry`=58003);
+INSERT INTO `gossip_menu` (`entry`, `text_id`) VALUES ('58003', '2'); -- Hey there, $N. How can I help you?
+-- And the part the player clicks on (handled in C++ script)
+DELETE FROM `gossip_menu_option` WHERE (`menu_id`=58003);
+INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `OptionBroadcastTextID`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `box_coded`, `box_money`, `BoxBroadcastTextID`, `VerifiedBuild`) 
+VALUES 
+('58003', '0', '0', 'Thanks for your help! Have a safe trip home. (Dismiss)', '', '1', '1', '50000', '0', '0', '0', '', '0'); -- Dismiss the character
+
+-- Normal level soldier
+DELETE FROM `creature_template` WHERE (`entry`=251004);
+INSERT INTO `world`.`creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `dmgschool`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `DamageModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) 
+VALUES ('251004', '0', '0', '0', '0', '0', '25059', '25060', '25061', '25062', 'Valiant Soldier', 'of the Argent Crusade', '', '58003', '80', '80', '2', '1', '1', '1', '1.14286', '1', '0', '0', '2000', '2000', '1', '1', '2', '2048', '2048', '0', '0', '0', '0', '0', '0', '7', '4096', '0', '0', '0', '50', '5', '5', '5', '25', '5', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '3', '1', '2.1', '6', '1', '2', '1', '0', '0', '1', '0', '0', 'soloHelper', '12340');
+-- Add equipment
+DELETE FROM `creature_equip_template` WHERE (`CreatureID`=251004);
+INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`, `VerifiedBuild`) 
+VALUES ('251004', '1', '29668', '38554', '0', '-18019');
+
+-- Elite level soldier
+DELETE FROM `creature_template` WHERE (`entry`=251005);
+INSERT INTO `world`.`creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `dmgschool`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `DamageModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) 
+VALUES ('251005', '0', '0', '0', '0', '0', '26224', '26225', '26226', '26227', 'Elite Soldier', 'of the Argent Crusade', '', '58003', '80', '80', '2', '1', '1', '1', '1.14286', '1.06', '1', '0', '2000', '2000', '1', '1', '2', '2048', '2048', '0', '0', '0', '0', '0', '0', '7', '4096', '0', '0', '0', '50', '10', '10', '10', '50', '10', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '3', '1', '3.2', '7', '1', '4.2', '1', '0', '0', '1', '0', '0', 'soloHelper', '12340');
+-- Add equipment
+DELETE FROM `creature_equip_template` WHERE (`CreatureID`=251005);
+INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`, `VerifiedBuild`) 
+VALUES ('251005', '1', '40595', '40596', '0', '-18019');
+
+
 
 
