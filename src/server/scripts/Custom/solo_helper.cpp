@@ -3,6 +3,7 @@
 // Elite version is less likely to cast a healing spell, but can cast chain lightning. 
 
 #include "ScriptPCH.h"
+#include "ScriptedGossip.h"
 
 enum Spells
 {
@@ -26,6 +27,17 @@ enum Spells
     SPELL_ELITE_A = 41367,      // Divine Shield
     SPELL_ELITE_B = 59159,		// Thunderstorm
     SPELL_ELITE_C = 32375,		// Mass Dispell
+};
+
+enum Gossip
+{
+	GOSSIP_ITEM_A = 58003, // Join part
+	OPTION_ID_A = 0,
+	NPC_TEXT_REPLY_A = 4611, // "Of course..."
+	
+	GOSSIP_ITEM_B = 58004, // Dimiss
+	OPTION_ID_B = 1,
+	NPC_TEXT_REPLY_B = 17584, // "Walking down the street! Looking at my..."
 };
 
 class solo_helper: CreatureScript
@@ -153,14 +165,35 @@ public:
 		return new solo_helperAI(creature);
 	}
 	
+	bool OnGossipHello(Player* player, Creature* creature)
+	{
+		AddGossipItemFor(player, GOSSIP_ITEM_A, OPTION_ID_A, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+0);
+		AddGossipItemFor(player, GOSSIP_ITEM_B, OPTION_ID_B, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
+        
+        SendGossipMenuFor(player, NPC_TEXT_REPLY_A, creature->GetGUID());
+
+		return true;
+	}
+	
 	bool OnGossipSelect(Player* player, Creature* creature, uint32 uiSender, uint32 uiAction)
     {
 		player->PlayerTalkClass->ClearMenus();
 		player->PlayerTalkClass->SendCloseGossip();
 		
-		creature->Say("Walking down the street! Looking at my feet! Watching the leaves, fall off of the trees!", LANG_UNIVERSAL);
-		creature->CleanupsBeforeDelete();
-		delete creature;
+		creature->Say("DEBUG *** Selected: " + std::to_string(uiAction) + "\n", LANG_UNIVERSAL);
+		
+		switch (uiAction)
+		{
+			case 1000:
+				creature->Say("It's a party!", LANG_UNIVERSAL);
+				break;
+			case 1001:
+				creature->Say("Walking down the street! Looking at my feet! Watching the leaves, fall off of the trees!", LANG_UNIVERSAL);
+				creature->CleanupsBeforeDelete();
+				delete creature;
+				
+				break;
+		}
 		
 		return true;
     }

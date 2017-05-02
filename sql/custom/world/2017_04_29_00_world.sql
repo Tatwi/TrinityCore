@@ -61,9 +61,11 @@ DELETE FROM `gossip_menu` WHERE (`entry`=58003);
 INSERT INTO `gossip_menu` (`entry`, `text_id`) VALUES ('58003', '2'); -- Hey there, $N. How can I help you?
 -- And the part the player clicks on (handled in C++ script)
 DELETE FROM `gossip_menu_option` WHERE (`menu_id`=58003);
+DELETE FROM `gossip_menu_option` WHERE (`menu_id`=58004);
 INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`, `OptionBroadcastTextID`, `option_id`, `npc_option_npcflag`, `action_menu_id`, `action_poi_id`, `box_coded`, `box_money`, `BoxBroadcastTextID`, `VerifiedBuild`) 
 VALUES 
-('58003', '0', '0', 'Thanks for your help! Have a safe trip home. (Dismiss)', '', '1', '1', '50000', '0', '0', '0', '', '0'); -- Dismiss the character
+('58003', '0', '0', 'Please join my party. (Add/Create Party)', '', '1', '1', '50000', '0', '0', '0', '', '0'), -- Add the NPC to the party (handled in C++)
+('58004', '1', '0', 'Thanks for your help! Have a safe trip home. (Dismiss)', '', '1', '1', '50000', '0', '0', '0', '', '0'); -- Dismiss the character
 
 -- Normal level soldier
 DELETE FROM `creature_template` WHERE (`entry`=251004);
