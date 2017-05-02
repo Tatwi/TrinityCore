@@ -33,8 +33,8 @@ INSERT INTO `gossip_menu_option` (`menu_id`, `id`, `option_icon`, `option_text`,
 VALUES 
 ('58002', '0', '0', '', '71166', '1', '1', '50000', '0', '0', '50000', '42373', '0'), -- Port to Dalaran for 5g
 ('58002', '1', '0', 'I would like to check my mail.', '', '1', '1', '50000', '0', '0', '20000', '42373', '0'), -- Summon mail box for 2g
-('58002', '2', '0', 'I need to hire a soldier.', '', '1', '1', '50000', '0', '0', '250000', '42373', '0'), -- Summon one guard NPC at a time for 25g each, no max.
-('58002', '3', '0', 'I need to hire an elite soldier.', '', '1', '1', '50000', '0', '0', '1250000', '42373', '0'); -- Summon one guard NPC at a time for 125g each, no max.
+('58002', '2', '0', 'I need to hire a soldier.', '', '1', '1', '50000', '0', '0', '500000', '42373', '0'), -- Summon one guard NPC at a time for 50g each, no max.
+('58002', '3', '0', 'I need to hire an elite soldier.', '', '1', '1', '50000', '0', '0', '2250000', '42373', '0'); -- Summon one guard NPC at a time for 225g each, no max.
 
 -- Gossip Menu Step 3
 -- = = = = = = = = = = = 
@@ -68,7 +68,7 @@ VALUES
 -- Normal level soldier
 DELETE FROM `creature_template` WHERE (`entry`=251004);
 INSERT INTO `world`.`creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `dmgschool`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `DamageModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) 
-VALUES ('251004', '0', '0', '0', '0', '0', '25059', '25060', '25061', '25062', 'Valiant Soldier', 'of the Argent Crusade', '', '58003', '80', '80', '2', '1', '1', '1', '1.14286', '1', '0', '0', '2000', '2000', '1', '1', '2', '2048', '2048', '0', '0', '0', '0', '0', '0', '7', '4096', '0', '0', '0', '50', '5', '5', '5', '25', '5', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '3', '1', '2.1', '6', '1', '2', '1', '0', '0', '1', '0', '0', 'soloHelper', '12340');
+VALUES ('251004', '0', '0', '0', '0', '0', '25059', '25060', '25061', '25062', 'Valiant Soldier', 'Argent Crusade', '', '58003', '80', '80', '2', '1', '1', '1', '1.14286', '1', '0', '0', '2000', '2000', '1', '1', '2', '2048', '2048', '0', '0', '0', '0', '0', '0', '7', '4096', '0', '0', '0', '50', '5', '5', '5', '25', '5', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '3', '1', '1.65', '12', '0.7', '2', '1', '0', '0', '1', '0', '0', 'soloHelper', '12340');
 -- Add equipment
 DELETE FROM `creature_equip_template` WHERE (`CreatureID`=251004);
 INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`, `VerifiedBuild`) 
@@ -77,12 +77,12 @@ VALUES ('251004', '1', '29668', '38554', '0', '-18019');
 -- Elite level soldier
 DELETE FROM `creature_template` WHERE (`entry`=251005);
 INSERT INTO `world`.`creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `dmgschool`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `DamageModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) 
-VALUES ('251005', '0', '0', '0', '0', '0', '26224', '26225', '26226', '26227', 'Elite Soldier', 'of the Argent Crusade', '', '58003', '80', '80', '2', '1', '1', '1', '1.14286', '1.06', '1', '0', '2000', '2000', '1', '1', '2', '2048', '2048', '0', '0', '0', '0', '0', '0', '7', '4096', '0', '0', '0', '50', '10', '10', '10', '50', '10', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '3', '1', '3.2', '7', '1', '4.2', '1', '0', '0', '1', '0', '0', 'soloHelper', '12340');
+VALUES ('251005', '0', '0', '0', '0', '0', '26224', '26225', '26226', '26227', 'Elite Soldier', 'Argent Crusade', '', '58003', '80', '80', '2', '1', '1', '1', '1.14286', '1.06', '1', '1', '1500', '2000', '1', '1', '2', '2048', '2048', '0', '0', '0', '0', '0', '0', '7', '4096', '0', '0', '0', '50', '10', '10', '10', '50', '10', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '3', '1', '3.4', '14', '1.5', '4.2', '1', '0', '0', '1', '0', '0', 'soloHelper', '12340');
 -- Add equipment
 DELETE FROM `creature_equip_template` WHERE (`CreatureID`=251005);
 INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`, `VerifiedBuild`) 
 VALUES ('251005', '1', '40595', '40596', '0', '-18019');
 
-
+-- Helper follow and combat logic (indluding spells/attacks) handled using C++ script src/server/scripts/Custom/solo_helper.cpp
 
 

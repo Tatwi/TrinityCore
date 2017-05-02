@@ -3,24 +3,29 @@
 // Elite version is less likely to cast a healing spell, but can cast chain lightning. 
 
 #include "ScriptPCH.h"
-#include "ScriptedCreature.h"
 
 enum Spells
 {
     SPELL_HEAL = 55459,         // Chain Heal
     SPELL_PROTECTION_A = 49284, // Earth Shield
-    SPELL_PROTECTION_B = 48952, // Holy Shield
-    SPELL_BUFF_A = 20135,       // Redoubt
-    SPELL_BUFF_B = 20261,		// Divine Intelect
-    SPELL_BUFF_C = 20217,		// Blessing of Kings
-    SPELL_BUFF_D = 10060,       // Power Infusion
+    SPELL_PROTECTION_B = 48952, // (E) Holy Shield
+    SPELL_AURA_A = 7376,        // Deffensive Stance (threat)
+    SPELL_AURA_B = 54043,       // Retribution Aura
+    SPELL_AURA_C = 20135,		// Redoubt (shield use bonus)
+    SPELL_AURA_D = 20105,       // Benediction (5% mana cost reduction on instant cast spells)
+    SPELL_AURA_E = 31878,       // Judgement of the Wise (restore mana)
+    SPELL_AURA_F = 45216,       // (E) +100 MP5
+    SPELL_AURA_G = 53592,       // (E) Touched By The Light (+spell power and crit heals)
+    SPELL_AURA_H = 69709,       // (E) +250 Spell Power
+    SPELL_BUFF_A = 20217,		// Blessing of Kings
+    SPELL_BUFF_B = 20166,		// Seal of Wizdom (restore mana)
     SPELL_DAMAGE_A = 53385,     // Divine Storm
-    SPELL_DAMAGE_B = 53595,     // Hammer of the Righteous
+    SPELL_DAMAGE_B = 20186,     // Judgement of Wizdom
     SPELL_DAMAGE_C = 36835,     // Warstomp
+    SPELL_FEAR = 68950,         // Fear (Boss spell)
     SPELL_ELITE_A = 41367,      // Divine Shield
     SPELL_ELITE_B = 59159,		// Thunderstorm
-    SPELL_ELITE_C = 48171,		// Resurection
-    THREAT_FACTOR = 10000,      // Taunt per swing
+    SPELL_ELITE_C = 32375,		// Mass Dispell
 };
 
 class solo_helper: CreatureScript
@@ -39,21 +44,36 @@ public:
 		
 		void Reset() // On spawn, evade, end of combat
 		{
+			if (!me->HasAura(SPELL_AURA_A))
+				me->AddAura(SPELL_AURA_A, me);
+			if (!me->HasAura(SPELL_AURA_B))
+				me->AddAura(SPELL_AURA_B, me);
+			if (!me->HasAura(SPELL_AURA_C))
+				me->AddAura(SPELL_AURA_C, me);
+			if (!me->HasAura(SPELL_AURA_D))
+				me->AddAura(SPELL_AURA_D, me);
+			if (!me->HasAura(SPELL_AURA_E))
+					me->AddAura(SPELL_AURA_E, me);
+			
 			DoCast(me, SPELL_PROTECTION_A);
+			DoCast(me, SPELL_BUFF_A);
 			DoCast(me, SPELL_BUFF_B);
-			DoCast(me, SPELL_BUFF_C);
-
+			
+			// Elite only
+			if (me->GetCreatureTemplate()->rank == 1)
+			{	
+				if (!me->HasAura(SPELL_AURA_F))
+					me->AddAura(SPELL_AURA_F, me);
+				if (!me->HasAura(SPELL_AURA_G))
+					me->AddAura(SPELL_AURA_G, me);
+				if (!me->HasAura(SPELL_AURA_H))
+					me->AddAura(SPELL_AURA_H, me);
+			}
 		}
 		
-		void impressiveTaunt()
+		void EnterCombat(Unit* victim)
 		{
-			Unit* victim = me->GetVictim();
-			me->AddThreat(victim, (float)THREAT_FACTOR);
-		}
-		
-		void EnterCombat(Unit* who)
-		{
-			impressiveTaunt();
+			Reset();
 		}
 		
 		void UpdateAI(const uint32 uiDiff)
@@ -87,25 +107,31 @@ public:
 				
 				// If Eilte, enable chance for special attack and cooldown reduction
 				if (me->GetCreatureTemplate()->rank == 1)
-					rng += 10;
+					rng += 15;
 
 				if (rng > 100){
 					// Elite Only Attack
 					DoCast(victim, SPELL_ELITE_A);
-					DoCast(victim, SPELL_ELITE_B);
+					
+					if (urand(0,100) > 20){
+						DoCast(victim, SPELL_ELITE_B);
+					} else {
+						DoCast(victim, SPELL_ELITE_C);
+					}
+					
 					cooldownTimer = 20;
-				} else if (rng > 95){
+				} else if (rng > 96){
 					DoCast(me, SPELL_PROTECTION_B);
-				} else if (rng > 90){
+				} else if (rng > 92){
 					DoCast(me, SPELL_PROTECTION_A);
-				} else if (rng > 70){
+				} else if (rng > 67){
 					DoCast(victim, SPELL_DAMAGE_A);
-				} else if (rng > 45){
+				} else if (rng > 42){
 					DoCast(victim, SPELL_DAMAGE_B);
-				} else if (rng > 20){
+				} else if (rng > 23){
 					DoCast(victim, SPELL_DAMAGE_C);
-				} else if (rng > 15){
-					DoCast(victim, SPELL_BUFF_D); 
+				} else if (rng > 20){
+					DoCast(victim, SPELL_FEAR); 
 				} else if (rng > 0){
 					DoCast(me, SPELL_HEAL);
 				}
@@ -113,7 +139,6 @@ public:
 			} 
 			
 			DoMeleeAttackIfReady();
-			impressiveTaunt();
 
 			cooldownTimer++; // Server "tick" approx every 55ms
 			
