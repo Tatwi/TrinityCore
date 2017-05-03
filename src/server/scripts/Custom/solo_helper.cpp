@@ -1,6 +1,7 @@
 // Solozeroth
 // Basic "dumb" combat helpers for level 80, called using the Dial-A-Mage trinket. 
-// Elite version is less likely to cast a healing spell, but can cast chain lightning. 
+// Elite version does more damage, holds threat better, and has more skills.
+// Characters randomly do their own abilities, much like many people I have played with... :)
 
 #include "ScriptPCH.h"
 #include "ScriptedGossip.h"
@@ -10,6 +11,7 @@ enum Spells
     SPELL_HEAL = 55459,         // Chain Heal
     SPELL_PROTECTION_A = 49284, // Earth Shield
     SPELL_PROTECTION_B = 48952, // (E) Holy Shield
+    SPELL_TAUNT = 355,			// Taunt
     SPELL_AURA_A = 7376,        // Deffensive Stance (threat)
     SPELL_AURA_B = 54043,       // Retribution Aura
     SPELL_AURA_C = 20135,		// Redoubt (shield use bonus)
@@ -23,15 +25,15 @@ enum Spells
     SPELL_DAMAGE_A = 53385,     // Divine Storm
     SPELL_DAMAGE_B = 20186,     // Judgement of Wizdom
     SPELL_DAMAGE_C = 36835,     // Warstomp
-    SPELL_FEAR = 68950,         // Fear (Boss spell)
-    SPELL_ELITE_A = 41367,      // Divine Shield
+    SPELL_DAMAGE_D = 53595,     // Hammer of the Righteous
+    SPELL_ELITE_A = 25780,      // Righteous Fury (threat)
     SPELL_ELITE_B = 59159,		// Thunderstorm
     SPELL_ELITE_C = 32375,		// Mass Dispell
 };
 
 enum Gossip
 {
-	GOSSIP_ITEM_A = 58003, // Join part
+	GOSSIP_ITEM_A = 58003, // Join party...
 	OPTION_ID_A = 0,
 	NPC_TEXT_REPLY_A = 4611, // "Of course..."
 	
@@ -53,7 +55,7 @@ public:
 		uint32 cooldownTimer = 0;
 		bool onCoolDown = false;
 		Unit* player = NULL;
-		
+
 		void Reset() // On spawn, evade, end of combat
 		{
 			if (!me->HasAura(SPELL_AURA_A))
@@ -98,9 +100,10 @@ public:
 				if (player != NULL)
 				{
 					if (!me->isMoving())
-						me->SetHomePosition(player->GetPositionX() + frand(-3.0f, 3.0f), player->GetPositionY() + frand(-3.0f, 3.0f), player->GetPositionZ(), me->GetFollowAngle());
+						me->SetHomePosition(player->GetPositionX() + frand(-5.0f, 5.0f), player->GetPositionY() + frand(-5.0f, 5.0f), player->GetPositionZ(), me->GetFollowAngle());
 					
-					me->GetMotionMaster()->MoveFollow(player, frand(-3.0f, 3.0f), me->GetFollowAngle());
+					if (player->isMoving())
+						me->GetMotionMaster()->MoveFollow(player, frand(-8.0f, 8.0f), me->GetFollowAngle());
 				}
 			}
 			
@@ -143,7 +146,7 @@ public:
 				} else if (rng > 23){
 					DoCast(victim, SPELL_DAMAGE_C);
 				} else if (rng > 20){
-					DoCast(victim, SPELL_FEAR); 
+					DoCast(victim, SPELL_DAMAGE_D); 
 				} else if (rng > 0){
 					DoCast(me, SPELL_HEAL);
 				}
@@ -156,6 +159,7 @@ public:
 			
 			if (cooldownTimer > cooldownDuration){
 				onCoolDown = false;
+				DoCast(victim, SPELL_TAUNT); // Taunt's cooldown is 8s, but this will try and after about 5 seconds. Should be fine.
 			}
 		}
 	};
@@ -180,19 +184,21 @@ public:
 		player->PlayerTalkClass->ClearMenus();
 		player->PlayerTalkClass->SendCloseGossip();
 		
-		creature->Say("DEBUG *** Selected: " + std::to_string(uiAction) + "\n", LANG_UNIVERSAL);
-		
 		switch (uiAction)
 		{
 			case 1000:
-				creature->Say("It's a party!", LANG_UNIVERSAL);
+			{
+				creature->Say("Eh? I don't need to do that. Just lead me to the enemy!", LANG_UNIVERSAL);				
 				break;
+			}
 			case 1001:
+			{
 				creature->Say("Walking down the street! Looking at my feet! Watching the leaves, fall off of the trees!", LANG_UNIVERSAL);
 				creature->CleanupsBeforeDelete();
 				delete creature;
 				
 				break;
+			}
 		}
 		
 		return true;
