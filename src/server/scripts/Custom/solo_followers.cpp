@@ -55,6 +55,9 @@ public:
 					me->Attack(owner->getAttackerForHelper(), true);
 			}
 			
+			if (!me->IsMounted())
+				me->SetSpeedRate(MOVE_RUN, 1.14286f); // Without this mount speed persists after dismounting
+				
 			if (!UpdateVictim())
 				return;
 			
