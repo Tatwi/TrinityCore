@@ -32,6 +32,10 @@ VALUES ('5449', '1', '44091', '0', '0', '0');
 -- Gossip
 DELETE FROM `gossip_menu` WHERE (`entry`=58005);
 INSERT INTO `gossip_menu` (`entry`, `text_id`) VALUES ('58005', '15404'); -- All this talk about food is making me hungry!
+-- Text on low health
+DELETE FROM `creature_text` WHERE (`entry`=5449);
+INSERT INTO `creature_text` (`entry`, `groupid`, `id`, `text`, `type`, `language`, `probability`, `emote`, `duration`, `sound`, `BroadcastTextId`, `TextRange`, `comment`) 
+VALUES ('5449', '0', '0', 'Ouch! That is it, I quit the target business!', '12', '0', '100', '0', '0', '2727', '27757', '0', 'Ahurgle Blurg');
 
 -- =  =  =  =  =  =  =  =  =  =  =  =  =
 -- Sydney Rain (Stomrwind Guard)
@@ -44,7 +48,7 @@ VALUES ('18963', '15', '2', '-1', 'Sydney Rain', '18051', '7', '134217856', '0',
 -- Modify "Tamed Bear" template
 DELETE FROM `creature_template` WHERE (`entry`=5433);
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `dmgschool`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `DamageModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) 
-VALUES ('5433', '0', '0', '0', '0', '0', '5446', '3591', '18052', '0', 'Sydney Rain', '', '3506', '1', '1', '0', '1961', '1', '1.2', '1.14286', '1', '0', '0', '1510', '1661', '1', '1', '2', '0', '2048', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '47993', '458', '', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '1', '1', '1.25', '1.25', '1.75', '10', '1', '0', '0', '1', '0', '0', 'soloFollowers', '12340');
+VALUES ('5433', '0', '0', '0', '0', '0', '5446', '3591', '18052', '0', 'Sydney Rain', '', '3502', '1', '1', '0', '1961', '1', '1.2', '1.14286', '1', '0', '0', '1510', '1661', '1', '1', '2', '0', '2048', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '47993', '458', '', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '1', '1', '1.25', '1.25', '1.75', '10', '1', '0', '0', '1', '0', '0', 'soloFollowers', '12340');
 -- Aura spells, etc
 DELETE FROM `creature_template_addon` WHERE (`entry`=5433);
 INSERT INTO `creature_template_addon` (`entry`, `path_id`, `mount`, `bytes1`, `bytes2`, `emote`, `auras`) 
@@ -53,6 +57,10 @@ VALUES ('5433', '0', '0', '0', '0', '0', '20135 12727 29599 12815'); -- Redoubt,
 DELETE FROM `creature_equip_template` WHERE (`CreatureID`=5433);
 INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`, `VerifiedBuild`) 
 VALUES ('5433', '1', '1899', '143', '2551', '0');
+-- Text on low health
+DELETE FROM `creature_text` WHERE (`entry`=5433);
+INSERT INTO `creature_text` (`entry`, `groupid`, `id`, `text`, `type`, `language`, `probability`, `emote`, `duration`, `sound`, `BroadcastTextId`, `TextRange`, `comment`) 
+VALUES ('5433', '0', '0', 'Ouch! That is it, I quit the target business!', '12', '0', '100', '0', '0', '6916', '27757', '0', 'Sydney Rain');
 
 -- =  =  =  =  =  =  =  =  =  =  =  =  =
 -- Bria Moonraven (Undercity Dark Ranger)
@@ -65,7 +73,7 @@ VALUES ('18965', '15', '2', '-1', 'Bria Moonraven', '18051', '7', '134217856', '
 -- Modify "Tamed Bird" template
 DELETE FROM `creature_template` WHERE (`entry`=5436);
 INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `dmgschool`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `DamageModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) 
-VALUES ('5436', '0', '0', '0', '0', '0', '30686', '0', '0', '0', 'Bria Moonraven', '', '3506', '1', '1', '0', '1961', '1', '1.2', '1.14286', '1', '0', '5', '990', '1661', '1', '1', '2', '0', '2048', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '10', '25', '10', '10', '10', '5', '47996', '22722', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '1', '1', '1.10', '1.25', '1.25', '1', '1', '0', '0', '1', '0', '0', 'soloFollowers', '12340');
+VALUES ('5436', '0', '0', '0', '0', '0', '30686', '0', '0', '0', 'Bria Moonraven', '', '58005', '1', '1', '0', '1961', '1', '1.2', '1.14286', '1', '0', '5', '990', '1661', '1', '1', '2', '0', '2048', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '10', '25', '10', '10', '10', '5', '47996', '22722', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '1', '1', '1.10', '1.25', '1.25', '1', '1', '0', '0', '1', '0', '0', 'soloFollowers', '12340');
 -- Aura spells, etc
 DELETE FROM `creature_template_addon` WHERE (`entry`=5436);
 INSERT INTO `creature_template_addon` (`entry`, `path_id`, `mount`, `bytes1`, `bytes2`, `emote`, `auras`) 
@@ -73,4 +81,34 @@ VALUES ('5436', '0', '0', '0', '0', '0', '201 674 30819 16284 3127 13854 13789')
 -- Equipment
 DELETE FROM `creature_equip_template` WHERE (`CreatureID`=5436);
 INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`, `VerifiedBuild`) 
-VALUES ('5436', '1', '23540', '23540', '0', '0'); -- Sword (23540)
+VALUES ('5436', '1', '23540', '23540', '0', '0'); -- Swords
+-- Text on low health
+DELETE FROM `creature_text` WHERE (`entry`=5436);
+INSERT INTO `creature_text` (`entry`, `groupid`, `id`, `text`, `type`, `language`, `probability`, `emote`, `duration`, `sound`, `BroadcastTextId`, `TextRange`, `comment`) 
+VALUES ('5436', '0', '0', 'Ouch! That is it, I quit the target business!', '12', '0', '100', '0', '0', '9647', '27757', '0', 'Bria Moonraven');
+
+-- =  =  =  =  =  =  =  =  =  =  =  =  =
+-- Bowlkin (Owlbeast)
+-- Spells: Moonfire (12), Wrath (11), Innervate
+-- =  =  =  =  =  =  =  =  =  =  =  =  =
+-- Create item that spawns the character
+DELETE FROM `item_template` WHERE (`entry`=18966);
+INSERT INTO `item_template` (`entry`, `class`, `subclass`, `SoundOverrideSubclass`, `name`, `displayid`, `Quality`, `Flags`, `FlagsExtra`, `BuyCount`, `BuyPrice`, `SellPrice`, `InventoryType`, `AllowableClass`, `AllowableRace`, `ItemLevel`, `RequiredLevel`, `RequiredSkill`, `RequiredSkillRank`, `requiredspell`, `requiredhonorrank`, `RequiredCityRank`, `RequiredReputationFaction`, `RequiredReputationRank`, `maxcount`, `stackable`, `ContainerSlots`, `StatsCount`, `stat_type1`, `stat_value1`, `stat_type2`, `stat_value2`, `stat_type3`, `stat_value3`, `stat_type4`, `stat_value4`, `stat_type5`, `stat_value5`, `stat_type6`, `stat_value6`, `stat_type7`, `stat_value7`, `stat_type8`, `stat_value8`, `stat_type9`, `stat_value9`, `stat_type10`, `stat_value10`, `ScalingStatDistribution`, `ScalingStatValue`, `dmg_min1`, `dmg_max1`, `dmg_type1`, `dmg_min2`, `dmg_max2`, `dmg_type2`, `armor`, `holy_res`, `fire_res`, `nature_res`, `frost_res`, `shadow_res`, `arcane_res`, `delay`, `ammo_type`, `RangedModRange`, `spellid_1`, `spelltrigger_1`, `spellcharges_1`, `spellppmRate_1`, `spellcooldown_1`, `spellcategory_1`, `spellcategorycooldown_1`, `spellid_2`, `spelltrigger_2`, `spellcharges_2`, `spellppmRate_2`, `spellcooldown_2`, `spellcategory_2`, `spellcategorycooldown_2`, `spellid_3`, `spelltrigger_3`, `spellcharges_3`, `spellppmRate_3`, `spellcooldown_3`, `spellcategory_3`, `spellcategorycooldown_3`, `spellid_4`, `spelltrigger_4`, `spellcharges_4`, `spellppmRate_4`, `spellcooldown_4`, `spellcategory_4`, `spellcategorycooldown_4`, `spellid_5`, `spelltrigger_5`, `spellcharges_5`, `spellppmRate_5`, `spellcooldown_5`, `spellcategory_5`, `spellcategorycooldown_5`, `bonding`, `description`, `PageText`, `LanguageID`, `PageMaterial`, `startquest`, `lockid`, `Material`, `sheath`, `RandomProperty`, `RandomSuffix`, `block`, `itemset`, `MaxDurability`, `area`, `Map`, `BagFamily`, `TotemCategory`, `socketColor_1`, `socketContent_1`, `socketColor_2`, `socketContent_2`, `socketColor_3`, `socketContent_3`, `socketBonus`, `GemProperties`, `RequiredDisenchantSkill`, `ArmorDamageModifier`, `duration`, `ItemLimitCategory`, `HolidayId`, `ScriptName`, `DisenchantID`, `FoodType`, `minMoneyLoot`, `maxMoneyLoot`, `flagsCustom`, `VerifiedBuild`) 
+VALUES ('18966', '15', '2', '-1', 'Bowlkin', '18051', '7', '134217856', '0', '1', '150000', '0', '12', '-1', '-1', '0', '64', '0', '0', '0', '0', '0', '0', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '303', '129', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '7905', '0', '0', '0', '180000', '1193', '1000', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', 'Far from his home in the Hinterlands, Bowlkin is a real hoot to have around!', '0', '0', '0', '0', '0', '-1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '0', '0', '0', '0', '1');
+-- Modify "Tamed Boar" template
+DELETE FROM `creature_template` WHERE (`entry`=5437);
+INSERT INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficulty_entry_2`, `difficulty_entry_3`, `KillCredit1`, `KillCredit2`, `modelid1`, `modelid2`, `modelid3`, `modelid4`, `name`, `subname`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `dmgschool`, `BaseAttackTime`, `RangeAttackTime`, `BaseVariance`, `RangeVariance`, `unit_class`, `unit_flags`, `unit_flags2`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `trainer_class`, `trainer_race`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `spell5`, `spell6`, `spell7`, `spell8`, `PetSpellDataId`, `VehicleId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `HoverHeight`, `HealthModifier`, `ManaModifier`, `ArmorModifier`, `DamageModifier`, `ExperienceModifier`, `RacialLeader`, `movementId`, `RegenHealth`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`, `VerifiedBuild`) 
+VALUES ('5437', '0', '0', '0', '0', '0', '12238', '0', '0', '0', 'Bowlkin', '', '58005', '1', '1', '0', '1961', '1', '1.2', '1.14286', '0.85', '0', '0', '3500', '1661', '1', '1', '2', '0', '2048', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '26988', '48459', '29166', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '1', '1', '0.85', '2.5', '1.0', '10', '1', '0', '0', '1', '0', '0', 'soloFollowers', '12340');
+-- Aura spells, etc
+DELETE FROM `creature_template_addon` WHERE (`entry`=5437);
+INSERT INTO `creature_template_addon` (`entry`, `path_id`, `mount`, `bytes1`, `bytes2`, `emote`, `auras`) 
+VALUES ('5437', '0', '0', '0', '0', '0', '48511 16899 16847 45216'); -- Earth and Moon, Moonfurry, Moonglow, +150 MP5
+-- Equipment
+DELETE FROM `creature_equip_template` WHERE (`CreatureID`=5437);
+INSERT INTO `creature_equip_template` (`CreatureID`, `ID`, `ItemID1`, `ItemID2`, `ItemID3`, `VerifiedBuild`) 
+VALUES ('5437', '1', '0', '0', '0', '0'); -- None
+-- Text on low health
+DELETE FROM `creature_text` WHERE (`entry`=5437);
+INSERT INTO `creature_text` (`entry`, `groupid`, `id`, `text`, `type`, `language`, `probability`, `emote`, `duration`, `sound`, `BroadcastTextId`, `TextRange`, `comment`) 
+VALUES ('5437', '0', '0', 'Ouch! That is it, I quit the target business!', '12', '0', '100', '0', '0', '16975', '27757', '0', 'Bowlkin');
+
