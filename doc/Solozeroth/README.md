@@ -27,6 +27,9 @@ New items that can be found in the world, given to the player, etc.
 [new-items-gear-80.md](new-items-gear-80.md)  
 New level 80 gear that I have added.
 
+[mod-outland-gear-adjustment.md](mod-outland-gear-adjustment.md) 
+Made outland rare and epic gear available at lower levels to it can be used while leveling solo.
+
 ## Skills, Spells, & Commands
 
 [mod-commands.md](mod-commands.md)  
