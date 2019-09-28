@@ -1,15 +1,18 @@
 // Solozeroth
 // NPC teleports the player using a gossip conversation trigger.
 
+#include "Define.h"
 #include "ScriptMgr.h"
+#include "SharedDefines.h"
+#include "Unit.h"
 #include "ScriptedGossip.h"
 #include "Chat.h"
 #include "Language.h"
  
-class gossip_tele_dalaran: CreatureScript
+class gossip_tele_dalaran: UnitScript
 {
 public:
-    gossip_tele_dalaran() : CreatureScript("gossipTeleDalaran") {}
+    gossip_tele_dalaran() : UnitScript("gossipTeleDalaran") {}
  
     bool OnGossipSelect(Player* pPlayer, Creature* pCreature, uint32 uiSender, uint32 uiAction)
     {
