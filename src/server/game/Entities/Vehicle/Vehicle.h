@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2008-2019 TrinityCore <https://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -87,7 +87,7 @@ class TC_GAME_API Vehicle : public TransportBase
         void InitMovementInfoForBase();
 
         /// This method transforms supplied transport offsets into global coordinates
-        void CalculatePassengerPosition(float& x, float& y, float& z, float* o /*= NULL*/) const override
+        void CalculatePassengerPosition(float& x, float& y, float& z, float* o /*= nullptr*/) const override
         {
             TransportBase::CalculatePassengerPosition(x, y, z, o,
                 GetBase()->GetPositionX(), GetBase()->GetPositionY(),
@@ -95,7 +95,7 @@ class TC_GAME_API Vehicle : public TransportBase
         }
 
         /// This method transforms supplied global coordinates into local offsets
-        void CalculatePassengerOffset(float& x, float& y, float& z, float* o /*= NULL*/) const override
+        void CalculatePassengerOffset(float& x, float& y, float& z, float* o /*= nullptr*/) const override
         {
             TransportBase::CalculatePassengerOffset(x, y, z, o,
                 GetBase()->GetPositionX(), GetBase()->GetPositionY(),
@@ -104,6 +104,8 @@ class TC_GAME_API Vehicle : public TransportBase
 
         void RemovePendingEvent(VehicleJoinEvent* e);
         void RemovePendingEventsForSeat(int8 seatId);
+
+        bool HasPendingEventForSeat(int8 seatId) const;
 
     private:
         Unit* _me;                                          ///< The underlying unit with the vehicle kit. Can be player or creature.

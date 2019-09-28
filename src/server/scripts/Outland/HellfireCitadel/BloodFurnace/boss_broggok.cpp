@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2008-2019 TrinityCore <https://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -16,10 +16,14 @@
  */
 
 #include "ScriptMgr.h"
-#include "ScriptedCreature.h"
-#include "SpellScript.h"
-#include "SpellAuraEffects.h"
 #include "blood_furnace.h"
+#include "GameObject.h"
+#include "GameObjectAI.h"
+#include "InstanceScript.h"
+#include "ObjectAccessor.h"
+#include "ScriptedCreature.h"
+#include "SpellAuraEffects.h"
+#include "SpellScript.h"
 
 enum Yells
 {
@@ -54,12 +58,19 @@ class boss_broggok : public CreatureScript
             void Reset() override
             {
                 _Reset();
+
+                if (GameObject * lever = instance->GetGameObject(DATA_BROGGOK_LEVER))
+                {
+                    lever->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE | GO_FLAG_IN_USE);
+                    lever->SetGoState(GO_STATE_READY);
+                }
+
                 DoAction(ACTION_RESET_BROGGOK);
             }
 
-            void EnterCombat(Unit* /*who*/) override
+            void JustEngagedWith(Unit* /*who*/) override
             {
-                _EnterCombat();
+                _JustEngagedWith();
                 Talk(SAY_AGGRO);
             }
 
@@ -79,15 +90,15 @@ class boss_broggok : public CreatureScript
                 {
                     case EVENT_SLIME_SPRAY:
                         DoCastVictim(SPELL_SLIME_SPRAY);
-                        events.ScheduleEvent(EVENT_SLIME_SPRAY, urand(4000, 12000));
+                        events.ScheduleEvent(EVENT_SLIME_SPRAY, 4s, 12s);
                         break;
                     case EVENT_POISON_BOLT:
                         DoCastVictim(SPELL_POISON_BOLT);
-                        events.ScheduleEvent(EVENT_POISON_BOLT, urand(4000, 12000));
+                        events.ScheduleEvent(EVENT_POISON_BOLT, 4s, 12s);
                         break;
                     case EVENT_POISON_CLOUD:
                         DoCast(me, SPELL_POISON_CLOUD);
-                        events.ScheduleEvent(EVENT_POISON_CLOUD, 20000);
+                        events.ScheduleEvent(EVENT_POISON_CLOUD, 20s);
                         break;
                     default:
                         break;
@@ -99,18 +110,20 @@ class boss_broggok : public CreatureScript
                 switch (action)
                 {
                     case ACTION_PREPARE_BROGGOK:
-                        me->SetInCombatWithZone();
+                        DoZoneInCombat();
                         break;
                     case ACTION_ACTIVATE_BROGGOK:
                         me->SetReactState(REACT_AGGRESSIVE);
-                        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC | UNIT_FLAG_NON_ATTACKABLE);
-                        events.ScheduleEvent(EVENT_SLIME_SPRAY, 10000);
-                        events.ScheduleEvent(EVENT_POISON_BOLT, 7000);
-                        events.ScheduleEvent(EVENT_POISON_CLOUD, 5000);
+                        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                        me->SetImmuneToAll(false);
+                        events.ScheduleEvent(EVENT_SLIME_SPRAY, 10s);
+                        events.ScheduleEvent(EVENT_POISON_BOLT, 7s);
+                        events.ScheduleEvent(EVENT_POISON_CLOUD, 5s);
                         break;
                     case ACTION_RESET_BROGGOK:
                         me->SetReactState(REACT_PASSIVE);
-                        me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_PC | UNIT_FLAG_IMMUNE_TO_NPC | UNIT_FLAG_NON_ATTACKABLE);
+                        me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                        me->SetImmuneToAll(true);
                         break;
                 }
             }
@@ -127,18 +140,31 @@ class go_broggok_lever : public GameObjectScript
     public:
         go_broggok_lever() : GameObjectScript("go_broggok_lever") { }
 
-        bool OnGossipHello(Player* /*player*/, GameObject* go) override
+        struct go_broggok_leverAI : public GameObjectAI
         {
-            if (InstanceScript* instance = go->GetInstanceScript())
+            go_broggok_leverAI(GameObject* go) : GameObjectAI(go), instance(go->GetInstanceScript()) { }
+
+            InstanceScript* instance;
+
+            bool GossipHello(Player* /*player*/) override
+            {
                 if (instance->GetBossState(DATA_BROGGOK) != DONE && instance->GetBossState(DATA_BROGGOK) != IN_PROGRESS)
                 {
                     instance->SetBossState(DATA_BROGGOK, IN_PROGRESS);
-                    if (Creature* broggok = ObjectAccessor::GetCreature(*go, instance->GetGuidData(DATA_BROGGOK)))
+                    if (Creature* broggok = instance->GetCreature(DATA_BROGGOK))
                         broggok->AI()->DoAction(ACTION_PREPARE_BROGGOK);
                 }
 
-            go->UseDoorOrButton();
-            return false;
+                me->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_NOT_SELECTABLE | GO_FLAG_IN_USE);
+                me->SetGoState(GO_STATE_ACTIVE);
+
+                return true;
+            }
+        };
+
+        GameObjectAI* GetAI(GameObject* go) const override
+        {
+            return GetBloodFurnaceAI<go_broggok_leverAI>(go);
         }
 };
 
@@ -154,18 +180,18 @@ class spell_broggok_poison_cloud : public SpellScriptLoader
 
             bool Validate(SpellInfo const* spellInfo) override
             {
-                if (!sSpellMgr->GetSpellInfo(spellInfo->Effects[EFFECT_0].TriggerSpell))
-                    return false;
-                return true;
+                return ValidateSpellInfo({ spellInfo->Effects[EFFECT_0].TriggerSpell });
             }
 
             void PeriodicTick(AuraEffect const* aurEff)
             {
                 PreventDefaultAction();
+                if (!aurEff->GetTotalTicks())
+                    return;
 
                 uint32 triggerSpell = GetSpellInfo()->Effects[aurEff->GetEffIndex()].TriggerSpell;
                 int32 mod = int32(((float(aurEff->GetTickNumber()) / aurEff->GetTotalTicks()) * 0.9f + 0.1f) * 10000 * 2 / 3);
-                GetTarget()->CastCustomSpell(triggerSpell, SPELLVALUE_RADIUS_MOD, mod, (Unit*)NULL, TRIGGERED_FULL_MASK, NULL, aurEff);
+                GetTarget()->CastSpell(nullptr, triggerSpell, CastSpellExtraArgs(aurEff).AddSpellMod(SPELLVALUE_RADIUS_MOD, mod));
             }
 
             void Register() override

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2008-2019 TrinityCore <https://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -18,10 +18,9 @@
 #ifndef _CHARACTERDATABASE_H
 #define _CHARACTERDATABASE_H
 
-#include "DatabaseWorkerPool.h"
 #include "MySQLConnection.h"
 
-enum CharacterDatabaseStatements
+enum CharacterDatabaseStatements : uint32
 {
     /*  Naming standard for defines:
         {DB}_{SEL/INS/UPD/DEL/REP}_{Summary of data changed}
@@ -29,8 +28,8 @@ enum CharacterDatabaseStatements
         name for a suiting suffix.
     */
 
-    CHAR_DEL_QUEST_POOL_SAVE,
-    CHAR_INS_QUEST_POOL_SAVE,
+    CHAR_DEL_POOL_QUEST_SAVE,
+    CHAR_INS_POOL_QUEST_SAVE,
     CHAR_DEL_NONEXISTENT_GUILD_BANK_ITEM,
     CHAR_DEL_EXPIRED_BANS,
     CHAR_SEL_CHECK_NAME,
@@ -114,6 +113,9 @@ enum CharacterDatabaseStatements
     CHAR_DEL_AUCTION,
     CHAR_UPD_AUCTION_BID,
     CHAR_SEL_AUCTIONS,
+    CHAR_SEL_AUCTION_BIDDERS,
+    CHAR_INS_AUCTION_BIDDERS,
+    CHAR_DEL_AUCTION_BIDDERS,
     CHAR_INS_MAIL,
     CHAR_DEL_MAIL_BY_ID,
     CHAR_INS_MAIL_ITEM,
@@ -189,11 +191,10 @@ enum CharacterDatabaseStatements
     CHAR_DEL_GUILD_MEMBER_WITHDRAW,
     CHAR_SEL_CHAR_DATA_FOR_GUILD,
 
-    CHAR_SEL_CHANNEL,
-    CHAR_INS_CHANNEL,
     CHAR_UPD_CHANNEL,
     CHAR_UPD_CHANNEL_USAGE,
     CHAR_UPD_CHANNEL_OWNERSHIP,
+    CHAR_DEL_CHANNEL,
     CHAR_DEL_OLD_CHANNELS,
 
     CHAR_UPD_EQUIP_SET,
@@ -260,16 +261,11 @@ enum CharacterDatabaseStatements
     CHAR_DEL_CORPSE,
     CHAR_DEL_CORPSES_FROM_MAP,
     CHAR_SEL_CORPSE_LOCATION,
-
-    CHAR_SEL_CREATURE_RESPAWNS,
-    CHAR_REP_CREATURE_RESPAWN,
-    CHAR_DEL_CREATURE_RESPAWN,
-    CHAR_DEL_CREATURE_RESPAWN_BY_INSTANCE,
-
-    CHAR_SEL_GO_RESPAWNS,
-    CHAR_REP_GO_RESPAWN,
-    CHAR_DEL_GO_RESPAWN,
-    CHAR_DEL_GO_RESPAWN_BY_INSTANCE,
+    
+    CHAR_SEL_RESPAWNS,
+    CHAR_REP_RESPAWN,
+    CHAR_DEL_RESPAWN,
+    CHAR_DEL_ALL_RESPAWNS,
 
     CHAR_SEL_GM_TICKETS,
     CHAR_REP_GM_TICKET,
@@ -333,6 +329,7 @@ enum CharacterDatabaseStatements
     CHAR_DEL_CHARACTER_SOCIAL,
     CHAR_UPD_CHARACTER_SOCIAL_NOTE,
     CHAR_UPD_CHARACTER_POSITION,
+    CHAR_UPD_CHARACTER_POSITION_BY_MAPID,
 
     CHAR_INS_LFG_DATA,
     CHAR_DEL_LFG_DATA,
@@ -351,7 +348,6 @@ enum CharacterDatabaseStatements
     CHAR_SEL_PINFO_BANS,
     CHAR_SEL_CHAR_HOMEBIND,
     CHAR_SEL_CHAR_GUID_NAME_BY_ACC,
-    CHAR_SEL_POOL_QUEST_SAVE,
     CHAR_SEL_CHARACTER_AT_LOGIN,
     CHAR_SEL_CHAR_CLASS_LVL_AT_LOGIN,
     CHAR_SEL_CHAR_CUSTOMIZE_INFO,
@@ -536,13 +532,12 @@ public:
     typedef CharacterDatabaseStatements Statements;
 
     //- Constructors for sync and async connections
-    CharacterDatabaseConnection(MySQLConnectionInfo& connInfo) : MySQLConnection(connInfo) { }
-    CharacterDatabaseConnection(ProducerConsumerQueue<SQLOperation*>* q, MySQLConnectionInfo& connInfo) : MySQLConnection(q, connInfo) { }
+    CharacterDatabaseConnection(MySQLConnectionInfo& connInfo);
+    CharacterDatabaseConnection(ProducerConsumerQueue<SQLOperation*>* q, MySQLConnectionInfo& connInfo);
+    ~CharacterDatabaseConnection();
 
     //- Loads database type specific prepared statements
     void DoPrepareStatements() override;
 };
-
-typedef DatabaseWorkerPool<CharacterDatabaseConnection> CharacterDatabaseWorkerPool;
 
 #endif

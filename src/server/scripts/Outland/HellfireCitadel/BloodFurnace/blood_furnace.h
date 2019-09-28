@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2017 TrinityCore <http://www.trinitycore.org/>
+ * Copyright (C) 2008-2019 TrinityCore <https://www.trinitycore.org/>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -17,6 +17,8 @@
 
 #ifndef BLOOD_FURNACE_H_
 #define BLOOD_FURNACE_H_
+
+#include "CreatureAIImpl.h"
 
 #define BFScriptName "instance_blood_furnace"
 #define DataHeader   "BF"
@@ -48,7 +50,8 @@ enum BFCreatureIds
     NPC_THE_MAKER               = 17381,
     NPC_BROGGOK                 = 17380,
     NPC_KELIDAN_THE_BREAKER     = 17377,
-    NPC_PRISONER                = 17398,
+    NPC_PRISONER1               = 17398,
+    NPC_PRISONER2               = 17429,
     NPC_BROGGOK_POISON_CLOUD    = 17662
 };
 
@@ -80,10 +83,10 @@ enum BFActionIds
     ACTION_PREPARE_BROGGOK      = 3
 };
 
-template<class AI>
-AI* GetBloodFurnaceAI(Creature* creature)
+template <class AI, class T>
+inline AI* GetBloodFurnaceAI(T* obj)
 {
-    return GetInstanceAI<AI>(creature, BFScriptName);
+    return GetInstanceAI<AI>(obj, BFScriptName);
 }
 
 #endif // BLOOD_FURNACE_H_
