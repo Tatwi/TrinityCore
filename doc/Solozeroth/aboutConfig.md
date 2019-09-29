@@ -3,10 +3,8 @@ These are the customizations that have been made using the [worldserver.conf](wo
 
 #### Leveling and Characters
 - Always show low level quests.
-- Double XP weekends.
 - XP from quests and killing monsters increased by 2x.
 - XP from exploration increased by 2x.
-- Offline rested generation increased by 1.5x anywhere and 2x in a tavern or city.
 - May have 2 Death Knights and may create one without already having a level 55 character.
 - Dual spec at level 15.
 - Players start knowing all the flight paths.
@@ -14,10 +12,10 @@ These are the customizations that have been made using the [worldserver.conf](wo
 
 #### Money and Loot
 - Players start with 1000 honor and the cap was increased to 125,000.
-- Increased drop rate of loot items: Grey (2x), Green (2x), Blue (1.75x), Purple (1.5x).
-- Increased money drop rate by 2x.
+- Increased drop rate of loot items: Grey (2x), White (1.75x), Green (1.5x), Blue (1.25x), Purple (1.25x).
+- Increased money drop rate by 1.25x.
 - Increased money reward from quests by 1.5x.
-- Increased money reward from quests at level 80 by 3x.
+- Increased money reward from quests at level 80 by 2x.
 
 #### Professions
 - Can have 4 primary professions.
