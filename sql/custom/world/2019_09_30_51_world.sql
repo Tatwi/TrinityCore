@@ -8,7 +8,9 @@ VALUES
 -- Leather
 ('15000210','500054','0','1','1','0','0','-2092.5','-1990.04','0.3884','3.371439','300','0','0','24009944','0','0'),
 -- Metal & Stone
-('15000211','500060','0','1','1','0','0','-2091.96','-1992.37','0.3674','3.371439','300','0','0','24009944','0','0');
+('15000211','500060','0','1','1','0','0','-2091.96','-1992.37','0.3674','3.371439','300','0','0','24009944','0','0'),
+-- Herbs
+('15000212','500043','0','1','1','0','0','-2091.68','-1994.56','0.3357','3.054728','300','0','0','24009944','0','0');
 
 -- Adjust prices of items
 -- Leather
@@ -26,3 +28,4 @@ UPDATE `item_template` SET `BuyPrice`='30000' WHERE `entry`='36914'; -- Azurite 
 -- Modify character appearances
 UPDATE `creature_template` SET `modelid1`='3277', `scale`='1' WHERE `entry`='500054'; -- Leather
 UPDATE `creature_template` SET `modelid1`='4637', `scale`='1' WHERE `entry`='500060'; -- Metal & Stone
+UPDATE `creature_template` SET `modelid1`='9272', `scale`='1' WHERE `entry`='500043'; -- Herbs
